@@ -59,4 +59,34 @@ export class AuthController {
       res.status(400).json({ error });
     }
   }
+  static async login(req, res) {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    //check if user exists
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      return res.status(400).json({ error: "Email não cadastrado" });
+    }
+    //check password
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if (!checkPassword) {
+      return res.status(400).json({ error: "Senha inválida" });
+    }
+
+    const token = jwt.sign(
+      {
+        name: user.name,
+        id: user._id,
+      },
+      process.env.SECRET
+    );
+    res.json({
+      error: null,
+      msg: "Você está autenticado",
+      token: token,
+      userId: user._id,
+    });
+  }
 }
