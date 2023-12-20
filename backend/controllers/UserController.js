@@ -13,4 +13,5 @@ export class UserController {
       return res.status(400).json({ error: "O usuário nã existe" });
     }
   }
+  static async updateUser(req, res) {}
 }

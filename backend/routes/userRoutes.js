@@ -1,6 +1,8 @@
 import express from "express";
 import { UserController } from "../controllers/UserController";
+import { checkToken } from "../helpers/checkToken.js";
 
 export const userRoutes = express.Router();
 
-userRoutes.get("/", UserController.getUser);
+userRoutes.get("/:id", checkToken, UserController.getUser);
+userRoutes.put("/", checkToken, UserController.updateUser);
