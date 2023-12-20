@@ -4,10 +4,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import { authRouter } from "./routes/authRoutes.js";
+import { userRoutes } from "./routes/userRoutes.js";
 dotenv.config();
-//routes
-
-//middlewares
 
 //config
 const app = express();
@@ -17,6 +15,7 @@ app.use(express.static("public"));
 //atrelar rotas no express
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`http://localhost:${process.env.PORT}`);
