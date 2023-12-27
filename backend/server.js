@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { authRouter } from "./routes/authRoutes.js";
 import { userRoutes } from "./routes/userRoutes.js";
+import { partyRouter } from "./routes/partyRoutes.js";
 dotenv.config();
 
 //config
@@ -16,6 +17,7 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRoutes);
+app.use("/api/user", partyRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`http://localhost:${process.env.PORT}`);
