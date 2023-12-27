@@ -74,4 +74,17 @@ export class PartyController {
       return res.status(400).json({ error });
     }
   }
+  static async partyUser(req, res) {
+    try {
+      const token = req.header("auth-header");
+      const user = await getUserByToken(token);
+      const userId = user._id.toString();
+      const partyId = req.partyDate.id;
+
+      const party = await Party.findOne({ _id: partyId, userId: userId });
+      res.json({ error: null, party: party });
+    } catch (error) {
+      return res.status(400).json({ error });
+    }
+  }
 }
