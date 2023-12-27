@@ -14,3 +14,4 @@ partyRouter.get(
   PartyController.newParty
 );
 partyRouter.get("/all", PartyController.allParty);
+partyRouter.get("/userparties", checkToken, PartyController.userParties);
