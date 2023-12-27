@@ -13,3 +13,4 @@ partyRouter.get(
   upload.fields([{ name: "photos" }]),
   PartyController.newParty
 );
+partyRouter.get("/all", PartyController.allParty);

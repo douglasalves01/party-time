@@ -55,4 +55,12 @@ export class PartyController {
       return res.status(400).json({ error: "Acesso negado" });
     }
   }
+  static async allParty(req, res) {
+    try {
+      const parties = await Party.find({ privacy: false }).sort([["._id", -1]]);
+      res.json({ error: null, parties: parties });
+    } catch (error) {
+      return res.status(400).json({ error });
+    }
+  }
 }
