@@ -7,7 +7,7 @@ export const partyRouter = express.Router();
 
 const upload = multer({ Storage: diskStorage });
 //define file storage
-partyRouter.get(
+partyRouter.post(
   "/",
   checkToken,
   upload.fields([{ name: "photos" }]),
@@ -17,5 +17,10 @@ partyRouter.get("/all", PartyController.allParty);
 partyRouter.get("/userparties", checkToken, PartyController.userParties);
 partyRouter.get("/userparty/:id", checkToken, PartyController.partyUser);
 partyRouter.get("/:id", PartyController.getPartyAll);
-partyRouter.get("/:id", PartyController.getPartyAll);
-partyRouter.post("/", checkToken, PartyController.deleteParty);
+partyRouter.delete("/", checkToken, PartyController.deleteParty);
+partyRouter.put(
+  "/",
+  checkToken,
+  upload.fields([{ name: "photos" }]),
+  PartyController.updateParty
+);

@@ -121,4 +121,66 @@ export class PartyController {
       res.status(400).json({ error });
     }
   }
+  static async updateParty(req, res) {
+    const title = req.body.title;
+    const description = req.body.description;
+    const partyDate = req.body.partyDate;
+    const partyId = req.body.partyId;
+    const partyUserId = req.body.partyUserId;
+
+    let files = [];
+
+    if (req.files) {
+    }
+    if (req.files) {
+      files = req.files.photos;
+    }
+
+    //validation
+    if (title == "null" || description == "null" || partyDate == "null") {
+      return res.status(400).json({ error: "Preencha todos os campos" });
+    }
+
+    const token = req.header("auth-token");
+    const user = await getUserByToken(token);
+    const userId = user._id.toString();
+
+    if (userId !== partyUserId) {
+      res.json({ error: "Acesso negado" });
+    }
+
+    const party = {
+      id: partyId,
+      title: title,
+      description: description,
+      partyDate: partyDate,
+      privacy: req.body.privacy,
+      userId: userId,
+    };
+
+    let photos = [];
+    if (files && files.length > 0) {
+      files.forEach((photo, i) => {
+        photos[i] = photo.path;
+      });
+      party.photos = photos;
+    }
+    try {
+      const updateParty = await Party.findOneAndUpdate(
+        {
+          _id: partyId,
+          userId: userid,
+        },
+        { $set: party },
+        { new: true }
+      );
+      res.json({
+        error: null,
+        msg: "Evento atualizado com sucesso",
+        data: updateParty,
+      });
+    } catch (error) {
+      res.status(400).json({ error });
+    }
+  }
 }
