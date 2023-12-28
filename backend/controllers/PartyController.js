@@ -79,12 +79,46 @@ export class PartyController {
       const token = req.header("auth-header");
       const user = await getUserByToken(token);
       const userId = user._id.toString();
-      const partyId = req.partyDate.id;
+      const partyId = req.params.id;
 
       const party = await Party.findOne({ _id: partyId, userId: userId });
       res.json({ error: null, party: party });
     } catch (error) {
       return res.status(400).json({ error });
+    }
+  }
+  static async getPartyAll(req, res) {
+    try {
+      const id = req.params.id;
+      const party = await Party.findOne({ _id: id });
+
+      //public party
+      if (party.privacy === false) {
+        res.json({ error: null, party: party });
+      } else {
+        //private party
+        const token = req.header("auth-token");
+        const user = await getUserByToken(token);
+        const userId = user._id.toString();
+        const userPartyId = party.userId.toString();
+        if (userId == userPartyId) {
+          res.json({ error: null, party: party });
+        }
+      }
+    } catch (error) {
+      return res.status(400).json({ error: "Esse evento não existe!" });
+    }
+  }
+  static async deleteParty(req, res) {
+    const token = req.header("auth-token");
+    const user = await getUserByToken(token);
+    const partyId = req.body.id;
+    const userId = user._id.toString();
+    try {
+      await Party.deleteOne({ _id: partyId, userId: userId });
+      res.json({ msg: "Evento removido com sucesso" });
+    } catch (error) {
+      res.status(400).json({ error });
     }
   }
 }

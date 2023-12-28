@@ -16,3 +16,6 @@ partyRouter.get(
 partyRouter.get("/all", PartyController.allParty);
 partyRouter.get("/userparties", checkToken, PartyController.userParties);
 partyRouter.get("/userparty/:id", checkToken, PartyController.partyUser);
+partyRouter.get("/:id", PartyController.getPartyAll);
+partyRouter.get("/:id", PartyController.getPartyAll);
+partyRouter.post("/", checkToken, PartyController.deleteParty);
